@@ -22,10 +22,10 @@ main function reads host/port from env just for an example, flavor it following 
 // Start /** Starts the web server listener on given host and port.
 func Start(host string, port int) {
 	router := mux.NewRouter()
-	router.HandleFunc("/name/{PARAM}", sayHello)                  // ----> To request all groceries
-	router.HandleFunc("/bad", badRequest)                         // ----> To request a specific grocery
-	router.HandleFunc("/data", returnBodyMessage).Methods("POST") // ----> To add  new grocery to buy
-	router.HandleFunc("/headers", returnHeaders).Methods("POST")  // ----> To update a grocery
+	router.HandleFunc("/name/{PARAM}", sayHello)
+	router.HandleFunc("/bad", badRequest)
+	router.HandleFunc("/data", returnBodyMessage).Methods("POST")
+	router.HandleFunc("/headers", returnHeaders).Methods("POST")
 
 	log.Println(fmt.Printf("Starting API server on %s:%d\n", host, port))
 	if err := http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), router); err != nil {
@@ -50,7 +50,6 @@ type Holder struct {
 	Param string `json: "PARAM"`
 }
 
-// TODO maybe we should pass plain PARAM in body but i dont think its possible
 func returnBodyMessage(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var holder Holder
@@ -59,9 +58,6 @@ func returnBodyMessage(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(`I got message: \n` + holder.Param)
 }
 
-// type Header map[string][]string therefore A+b:[5] array is returned
-// TODO case sensitiviry issue on headers
-// TODO Headers return with array
 func returnHeaders(w http.ResponseWriter, r *http.Request) {
 	a := r.Header["A"]
 	b := r.Header["B"]
