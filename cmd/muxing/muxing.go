@@ -83,7 +83,7 @@ func returnHeaders(w http.ResponseWriter, r *http.Request) {
 	}
 	str := strconv.Itoa(aInt + bInt)
 	w.Header().Add("a+b", str)
-	log.Println(fmt.Printf("fin %ss:\n", w.Header()))
+	log.Println(fmt.Printf("fin %ss:\n", str))
 }
 
 //main /** starts program, gets HOST:PORT param and calls Start func.
