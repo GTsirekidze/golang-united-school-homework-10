@@ -38,8 +38,7 @@ func sayHello(w http.ResponseWriter, r *http.Request) {
 
 	name := vars["PARAM"]
 
-	json.NewEncoder(w).Encode("Hello, " + name + "!")
-
+	w.Write([]byte("Hello, " + name + "!"))
 }
 
 func badRequest(w http.ResponseWriter, r *http.Request) {
@@ -53,18 +52,16 @@ type Holder struct {
 func returnBodyMessage(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var holder Holder
-	json.Unmarshal(reqBody, &holder)
 
-	json.NewEncoder(w).Encode(`I got message: \n` + holder.Param)
+	json.Unmarshal(reqBody, &holder)
+	w.Write([]byte("I got message:\n" + string(reqBody)))
 }
 
 func returnHeaders(w http.ResponseWriter, r *http.Request) {
 	a := r.Header["A"]
 	b := r.Header["B"]
 	log.Println(fmt.Printf("json %s %s:\n", a, b))
-	//var holder Holder
-	//json.Unmarshal(reqBody, &holder)
-	//
+
 	aInt, err := strconv.Atoi(a[0])
 	if err != nil {
 		// handle error
