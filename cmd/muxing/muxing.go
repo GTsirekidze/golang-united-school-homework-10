@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -45,15 +44,8 @@ func badRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(500)
 }
 
-type Holder struct {
-	Param string `json: "PARAM"`
-}
-
 func returnBodyMessage(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	var holder Holder
-
-	json.Unmarshal(reqBody, &holder)
 	w.Write([]byte("I got message:\n" + string(reqBody)))
 }
 
